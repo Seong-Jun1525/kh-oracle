@@ -1,8 +1,11 @@
 /*
 	SELECT : 데이터 조회
+	=> DQL로 분류된다. DML과 함께 묶는 경우가 많지만 정확한 분류는 DQL로 분류해야한다.
 	
 	[표현식]
 	SELECT 조회하고자 하는 정보 FROM 테이블명;
+	
+	=> 제일 먼저 FROM절을 확인하고 이후 컬럼들을 조회한다.
 
 	RESULT SET : 데이터를 조회한 결과
 */
@@ -13,8 +16,6 @@ SELECT * FROM EMPLOYEE;
 -- 모든 사원의 이름, 주민번호, 핸드폰 데이터 조회
 SELECT EMP_NAME, EMP_NO, PHONE FROM EMPLOYEE;
 -- => EMPLOYEE 테이블 조회 -> EMP_NAME, EMP_NO, PHONE 컬럼에 대한 데이터만 추출
-
--- 제일 먼저 FROM절을 확인하고 이후 컬럼들을 조회한다.
 
 -- 모든 직급에 대한 정보
 SELECT * FROM JOB;
