@@ -361,3 +361,72 @@ SELECT 1000000, TO_CHAR(1000000, 'L9,999,999') AS "포맷데이터" FROM DUAL;
 SELECT EMP_NAME AS "사원명", TO_CHAR(SALARY, 'L999,999,999') AS "월급", TO_CHAR(SALARY * 12, 'L999,999,999') AS "연봉"
 FROM EMPLOYEE;
 -- ==============================================================
+-- 날짜 타입 ☞ 문자타입
+SELECT SYSDATE, TO_CHAR(SYSDATE) AS "문자로 변환" FROM DUAL;
+/*
+	시간 관련 패턴
+	
+	- HH : 시 정보(HOUR) ☞ 12시간제
+	- HH24 ☞ 24시간제
+	
+	- MI : 분 정보(MINUTE)
+	- SS : 초 정보(SECOND)
+*/
+SELECT TO_CHAR(SYSDATE, 'HH:MI:SS') FROM DUAL; -- 12시간제
+SELECT TO_CHAR(SYSDATE, 'HH24:MI:SS') FROM DUAL; -- 12시간제
+
+SELECT TO_CHAR(SYSDATE, 'AM HH:MI:SS') FROM DUAL;
+SELECT TO_CHAR(SYSDATE, 'PM HH:MI:SS') FROM DUAL;
+-- ☞ AM / PM 은 오전 오후를 표시
+
+/*
+	요일 관련 패턴
+	
+	- DAY : X요일 ☞ 월요일, 화요일, ...
+	
+	- DY : 월, 화, 수, ...
+	
+	- D : 요일에 대해서 숫자타입으로 표시(1 : 일요일, 2: 월요일, ...7: 토요일)
+*/
+SELECT TO_CHAR(SYSDATE, 'YYYY-MM-DD DAY DY D') FROM DUAL;
+
+/*
+	월 관련 패턴
+	- MON, MONTH: X월 ☞ 1월, 2월, 3월, ...
+*/
+SELECT TO_CHAR(SYSDATE, 'MON MONTH') FROM DUAL;
+
+/*
+	일 관련 패턴
+	
+	- DD : 일 정보를 2자리로 표현
+	- DDD : 해당 날짜의 해당년도 기준 몇 번째 일수
+
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
