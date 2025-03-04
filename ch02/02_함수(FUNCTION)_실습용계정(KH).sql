@@ -401,32 +401,237 @@ SELECT TO_CHAR(SYSDATE, 'MON MONTH') FROM DUAL;
 	
 	- DD : 일 정보를 2자리로 표현
 	- DDD : 해당 날짜의 해당년도 기준 몇 번째 일수
+*/
+SELECT TO_CHAR(SYSDATE, 'DD') AS "2자리 표현", TO_CHAR(SYSDATE, 'DDD') AS "몇 번째 일"
+FROM DUAL;
 
+/*
+	년도 관련 패턴
+	- YYYY : 년도를 4자리로 표현
+	- YY: 년도를 2자리로 표현
+	
+	- RRRR: 년도를 4자리로 표현
+	- RR: 년도를 2자리로 표현
+	☞ 입력된 연도가 00 ~ 49일 때
+			☞ 현재 연도의 끝 두자리가 00 ~ 49
+				☞ 변환된 연도의 앞 두리가 현재 연도와 동일
+			☞ 현재 연도의 끝 두자리가 50 ~ 99
+				☞ 변환된 연도의 앞 두자리는 현재 연도의 앞 두자리의 + 1
+				
+	☞ 입력된 연도가 50 ~ 99일 때
+			☞ 현재연도의 끝 두자리가 00 ~ 49
+				☞ 변환된 연도의 앞 두자리에 현재 연도의 앞 두 자리 - 1
+			☞ 현재 연도의 끝 두자리가 50 ~ 99
+				☞ 변환된 연도의 앞 두자리가 현재 연도와 동일	
+*/
+SELECT TO_CHAR(TO_DATE('250304', 'RRMMDD'), 'YYYY') AS "RR 사용(50미만)",
+			TO_CHAR(TO_DATE('550304', 'RRMMDD'), 'YYYY') AS "RR 사용(50이상)",
+			TO_CHAR(TO_DATE('250304', 'YYMMDD'), 'YYYY') AS "YY 사용(50이상)",
+			TO_CHAR(TO_DATE('550304', 'YYMMDD'), 'YYYY') AS "YY 사용(50이상)"
+FROM DUAL;
+-- EX) 회원정보 중 1900 년대 생인 경우 위의 처럼 데이터를 불러오면 85년생이 2085으로 불러와지므로 이럴 경우에는 RR을 사용해야함
+
+-- 사원 정보 중 사원명, 입사날짜 조회
+SELECT EMP_NAME, TO_CHAR(HIRE_DATE, 'YYYY"년" MM"월" DD"일"') AS "입사날짜"
+FROM EMPLOYEE;
+-- 표시할 문자(글자) 부분은 큰 따옴표("")로 묶어서 패턴에 반영해야 함
+
+/*
+	TO_DATE : 숫자타입 또는 문자타입을 날짜타입으로 변경해주는 함수
+	
+	[표현법]
+		TO_DATE(숫자 또는 문자[, 패턴])
+*/
+SELECT TO_DATE(20250304) FROM DUAL;
+SELECT TO_DATE(250304) FROM DUAL; -- ☞ 50년 미만은 자동으로 20XX으로 변경됨
+SELECT TO_DATE(550304) FROM DUAL; -- ☞ 50년 이상은 자동으로 19XX으로 변경됨
+
+SELECT TO_DATE(020222) FROM DUAL; -- ☞ 숫자는 0으로 시작하면 안됨. 이럴 경우는 문자타입으로 전달해야함
+SELECT TO_DATE('020222') FROM DUAL;
+
+SELECT TO_DATE('20250304 104230') FROM DUAL; -- ☞ 시간을 포함하는 경우에는 패턴을 지정해야함
+SELECT TO_DATE('20250304 104230', 'YYYYMMDD HH24MISS') FROM DUAL;
+
+-- ==============================================================
+/*
+	TO_NUMBER : 문자타입의 데이터를 숫자타입으로 변경
+	
+	[표현법]
+		TO_NUMBER(문자[, 패턴])
+		☞ 기호나 화폐단위를 포함하는 경우 패턴을 지정
+*/
+SELECT TO_NUMBER('0123456789') FROM DUAL;
+SELECT '10000' + '500' FROM DUAL; -- ORACLE은 문자 ☞ 숫자 변환되어 산술연산이 수행됨
+SELECT '10,000' + '500' FROM DUAL; -- 에러발생
+
+SELECT TO_NUMBER('10,000', '999,999') + TO_NUMBER('500', '999,999') FROM DUAL;
+-- ==============================================================
+/*
+	NULL 처리 함수
+*/
+/*
+	NVL : 해당 컬럼의 값이 NULL일 경우 다른 값으로 사용할 수 있도록 변경해주는 함수
+	
+	[표현법]
+		NVL(컬럼명, 해당컬럼의 값이 NULL인 경우 사용할 값)
 */
 
+-- 사원 정보 중 사원명, 보너스 정보를 조회
+-- (단, 보너스 값이 NULL인 경우 0으로 표시)
+SELECT EMP_NAME, BONUS, NVL(BONUS, 0)
+FROM EMPLOYEE;
 
+-- 사원 정보 중 사원명, 보너스, 연봉, 보너스 포함 연봉을 조회
+SELECT EMP_NAME, NVL(BONUS, 0), SALARY * 12 AS "연봉", (SALARY + (SALARY * NVL(BONUS, 0))) * 12 AS "보너스 포함 연봉"
+FROM EMPLOYEE;
 
+/*
+	NVL2 : 해당 컬럼의 값이 NULL인 경우 표시할 값을 지정하고, NULL이 아닌 경우 표시할 값도 지정할 수 있는 함수
 
+	[표현법]
+		NVL2(컬럼명, 데이터가 존재하는 경우 사용할 값, NULL인 경우 사용할 값)
+*/
+-- 사원 정보 중 사원명, 보너스 유무 조회(보너스가 있을 경우 'O' 없을 경우 'X' 표시)
+SELECT EMP_NAME AS "사원명", NVL2(BONUS, 'O', 'X') AS "보너스 유무"
+FROM EMPLOYEE;
 
+-- 사원 정보 중 사원명, 부서코드, 부서배치여부 조회 (배치가 된 경우 '배정완료', 배치되지 않은 경우 '미배정' 표시)
+SELECT EMP_NAME, DEPT_CODE, NVL2(DEPT_CODE, '배정완료', '미배정') AS "부서배치여부"
+FROM EMPLOYEE;
 
+/*
+	NULLIF : 두 값이 일치하면 NULL, 일치하지 않는 다면 비교대상1 반환
 
+	[표현법]
+		NULLIF(비교대상1, 비교대상2)
+*/
+SELECT NULLIF('999', '999') FROM DUAL;
+SELECT NULLIF('999', '555') FROM DUAL;
 
+-- ==============================================================
+/*
+	선택함수
+		DECODE(비교대상, 비교값1, 결과값1, 비교값2, 결과값2, ...)
+		
+	☞ switch문과 유사함
+*/
+-- ==============================================================
+-- 사원정보 중 사번, 사원명, 주민번호, 성별 조회
+-- 단, 성별은 1인 경우 남, 2인 경우 여, 그외 알수없음
+SELECT EMP_ID, EMP_NAME, EMP_NO, DECODE(SUBSTR(EMP_NO, 8,1), 1, '남', 2, '여', '알수없음') AS "성별"
+FROM EMPLOYEE;
 
+-- 사원 정보 중 사원명, 기존급여, 인상된 급여 조회
+/*
+	직급 = 'J7'인 경우 10% 인상
+	직급 = 'J6'인 경우 15% 인상
+	직급 = 'J5'인 경우 20% 인상
+	그외 5%인상
+*/
+SELECT EMP_NAME, SALARY AS "기존 급여", DECODE(JOB_CODE, 'J7', SALARY * 1.1, 'J6', SALARY * 1.15, 'J5', SALARY * 1.2, SALARY * 1.05) AS "인상된 급여"
+FROM EMPLOYEE;
 
+/*
+	CASE WHEN THEN : 조건식에 따라 결과값을 반환해주는 함수
+	
+	[표현법]
+		CASE 
+			WHEN 조건식1 THEN 결과값1
+			WHEN 조건식2 THEN 결과값2
+			...
+			ELSE 결과값
+		END
+	☞ if-else문과 유사
+*/
+-- 사원정보 중 사원명, 급여, 급여에 따른 등급 조회
+/*
+	500만원 이상인 경우 '고급'
+	350만원 이상인 경우 '중급'
+	그외 초급
+*/
+SELECT EMP_NAME, SALARY, 
+		CASE
+			WHEN SALARY >= 5000000 THEN '고급'
+			WHEN SALARY BETWEEN 3500000 AND 4999999 THEN '중급'
+			ELSE '초급'
+		END AS "급여 등급"
+FROM EMPLOYEE;		
 
+-- ==============================================================
+/* 그룹함수
+	SUM : 해당 컬럼의 총 합을 반환해주는 함수
+	
+	[표현법]
+		SUM(숫자타입컬럼)
+*/
+-- 전체 사원들의 총 급여 조회
+SELECT SUM(SALARY) AS "총 급여"
+FROM EMPLOYEE;
 
+SELECT TO_CHAR(SUM(SALARY), 'L999,999,999') AS "총 급여" -- 나열해서 같이 사용할 수는 없지만 이런식으로 사용 가능
+FROM EMPLOYEE;
 
+SELECT TO_CHAR(SUM(SALARY), 'L999,999,999') AS "남자 사원의 총 급여"
+FROM EMPLOYEE
+WHERE SUBSTR(EMP_NO, 8, 1) = 1;
 
+-- 부서코드가 'D5'인 사원들의 총 연봉
+SELECT TO_CHAR(SUM(SALARY * 12), 'L999,999,999') AS "D5 총 연봉"
+FROM EMPLOYEE
+WHERE DEPT_CODE = 'D5';
+-- ==============================================================
+/*
+	AVG : 해당 컬럼의 평균을 반환해주는 함수
+	
+	[표현법]
+	AVG(숫자타입컬럼)
+*/
+-- 전체사원들의 평균 급여 조회( 반올림 적용)
+SELECT TO_CHAR(ROUND(AVG(SALARY)), 'L999,999,999') AS "평균급여"
+FROM EMPLOYEE;
+-- ==============================================================
+/*
+	MIN : 해당 컬럼의 값들 중 가장 작은 값을 반환
+	MAX : 해당 컬럼의 값들 중 가장 큰 값을 반환
+	
+	[표현법]
+	MIN(모든타입컬럼)
+	MAX(모든타입컬럼)
+*/
+SELECT MIN(EMP_NAME) AS "문자타입의 최솟값", MIN(SALARY) AS "숫자타입의 최솟값", MIN(HIRE_DATE) AS "날짜타입의 최솟값"
+FROM EMPLOYEE;
 
+SELECT MAX(EMP_NAME) AS "문자타입의 최솟값", MAX(SALARY) AS "숫자타입의 최솟값", MAX(HIRE_DATE) AS "날짜타입의 최솟값"
+FROM EMPLOYEE;
 
+-- ==============================================================
+/*
+	COUNT(*) : 조회된 결과에 모든 행의 갯수를 반환
+	COUNT(컬럼) : 해당컬럼의 값이 NULL이 아닌 것만 행의 갯수로 세어 반환
+	COUNT(DISTINCT 컬럼) : 해당 컬럼의 값에서 중복 제거 후 갯수를 세어 반환
+		☞ 중복 제거시 NULL은 포함하지 않고 갯수가 세어짐
+*/
+SELECT COUNT(*) AS "전체 사원 수"
+FROM EMPLOYEE;
 
+SELECT COUNT(*) AS "전체 사원 수"
+FROM EMPLOYEE
+WHERE SUBSTR(EMP_NO, 8, 1) = 1;
 
+SELECT COUNT(*) AS "전체 사원 수"
+FROM EMPLOYEE
+WHERE SUBSTR(EMP_NO, 8, 1) = 2;
 
+-- 보너스를 받는 사원 수
+SELECT COUNT(*) AS "보너스를 받는 사원 수"
+FROM EMPLOYEE
+WHERE BONUS IS NOT NULL;
 
+SELECT COUNT(BONUS) AS "보너스를 받는 사원 수"
+FROM EMPLOYEE;
 
+SELECT COUNT(DEPT_CODE) AS "부서배치를 받은 사원 수"
+FROM EMPLOYEE;
 
-
-
-
-
-
+SELECT COUNT(DISTINCT DEPT_CODE) AS "소속사원이 있는 부서 수"
+FROM EMPLOYEE;
