@@ -101,6 +101,14 @@ HAVING SUM(SALARY) = (
 -- 전지연 사원과 같은 부서의 사원들의 사번, 사원명, 연락처, 입사일, 부서명을 조회
 -- 단, 전지연 사원은 제외하고 조회
 SELECT EMP_ID, EMP_NAME, PHONE, HIRE_DATE, DEPT_TITLE
+FROM EMPLOYEE,  DEPARTMENT
+WHERE DEPT_CODE = DEPT_ID AND EMP_NAME != '전지연' AND DEPT_CODE = (
+	SELECT DEPT_CODE
+	FROM EMPLOYEE
+	WHERE EMP_NAME = '전지연'
+);
+
+SELECT EMP_ID, EMP_NAME, PHONE, HIRE_DATE, DEPT_TITLE
 FROM EMPLOYEE
 	JOIN DEPARTMENT ON DEPT_CODE = DEPT_ID
 WHERE EMP_NAME != '전지연' AND DEPT_CODE = (
@@ -108,3 +116,26 @@ WHERE EMP_NAME != '전지연' AND DEPT_CODE = (
 	FROM EMPLOYEE
 	WHERE EMP_NAME = '전지연'
 );
+-- =============================================================================
+/*
+	다중행 서브쿼리 : 서브쿼리 결과가 여러 행인 경우 (N행 1열)
+	IN (서브쿼리) : 여러 개의 결과값 중에 하나라도 일치하는 값이 있을 경우 조회
+	
+	☞ > ANY (서브쿼리) : 여러 개의 결과값 중에서 하나라도 큰 경우가 있다면 조회
+	☞ < ANY (서브쿼리) : 여러 개의 결과값 중에서 하나라도 작은 경우가 있다면 조회
+	
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
