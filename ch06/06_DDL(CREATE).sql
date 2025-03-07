@@ -98,7 +98,7 @@ COMMIT; -- 변경사항 적용
 		
 	- 데이터 추가(삽입) / 수정 시 NULL 값을 허용하지 않음
 	
-	- 컬럼 레벨 방식으로만 설정 가능
+	- 컬럼 레벨 방식으로만 설정 가능!!!
 */
 
 -- 테이블명 : MEMBER_NOTNULL
@@ -150,7 +150,7 @@ INSERT INTO MEMBER_UNIQUE VALUES(3, NULL, '5621', '하이유', NULL, NULL, NULL, NU
 INSERT INTO MEMBER_UNIQUE VALUES(1, 'HONG123', '1234', '홍길동', '남', 'hong123@emil.com', '010-1234-5678', SYSDATE);
 -- ORA-00001: 무결성 제약 조건(C##KH.SYS_C008380)에 위배됩니다
 -- (C##KH.SYS_C008380) ☞ 계정명.제약조건명
--- 제약 조건 설정 시 제약조건명을 지정하지 않으면 시스템에서 자동으로 만들어줌
+-- 제약 조건 설정 시 제약조건명을 지정하지 않으면 시스템에서 자동으로 만들어줌!!!
 
 /*
 	* 제약조건명 설정하기
@@ -447,6 +447,11 @@ CREATE TABLE MEMBER_COPY AS (
 	- PRIMARY KEY : ADD PRIMARY KEY (컬럼명);
 	- FOREIGN KEY : ADD FOREIGN KEY (컬럼명) REFERENCES 참조할테이블명 [(참조할컬럼명)];
 	
-	- NOT NULL : MODIFT 컬럼명 NOT NULL;
+	- NOT NULL : MODIFY 컬럼명 NOT NULL;
 	- DEFAULT 옵션 : MODIFY 컬럼명 DEAFULT 기본값;
 */
+-- MEMBER_COPY 테이블에 회원번호 컬럼에 기본키 설정
+ALTER TABLE MEMBER_COPY ADD PRIMARY KEY (MEM_NO);
+
+-- MEMBER_COPY 테이블에 HOBBY 컬럼에 기본값 설정
+ALTER TABLE MEMBER_COPY MODIFY HOBBY DEFAULT '없음';
