@@ -1,3 +1,5 @@
+-- ½ÃÇè¿¡ ³ª¿È!!!!!!
+
  ALTER SESSION SET "_ORACLE_SCRIPT"=TRUE;
 -- TEST0228
 
