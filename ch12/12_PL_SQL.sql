@@ -158,6 +158,7 @@ BEGIN
 	
 END;
 /
+
 -------------------------------------------------------------------------------------------------------------------------------------
 /*
 	실행부(BEGIN)
@@ -241,6 +242,201 @@ BEGIN
 	DBMS_OUTPUT.PUT_LINE('소속 : ' || TEAM);
 END;
 /
+-------------------------------------------------------------------------------------------------------------------------------------
+DECLARE
+	SCORE NUMBER;
+	GRADE CHAR(1);
+BEGIN
+	SCORE := &점수;
+	
+	IF SCORE >= 90 THEN GRADE := 'A';
+	ELSIF SCORE >= 80 THEN GRADE := 'B';
+	ELSIF SCORE >= 70 THEN GRADE := 'C';
+	ELSIF SCORE >= 60 THEN GRADE := 'D';
+	ELSE GRADE := 'F';
+	END IF;	
+	
+	IF GRADE = 'F' THEN DBMS_OUTPUT.PUT_LINE('재평가 대상입니다.');
+	ELSE DBMS_OUTPUT.PUT_LINE('점수는 ' || SCORE || '이고, 등급은 ' || GRADE || '입니다.');
+	END IF;
+END;
+/
+
+-- 사번을 입력받아 해당 사원의 부서코드를 기준으로 부서명을 출력
+DECLARE
+	EMP EMPLOYEE%ROWTYPE;
+	DTITLE VARCHAR2(20);
+BEGIN
+	SELECT *
+	INTO EMP
+	FROM EMPLOYEE
+	WHERE EMP_ID = '&사번';
+
+	DTITLE := CASE EMP.DEPT_CODE
+		WHEN 'D1' THEN  '인삭관리부'
+		WHEN 'D2' THEN '회계관리부'
+		WHEN 'D3' THEN '마케팅부'
+		WHEN 'D4' THEN  '국내영업부'
+		WHEN 'D5' THEN '해외영업1부'
+		WHEN 'D6' THEN '해외영업2부'
+		WHEN 'D7' THEN '해외영업3부'
+		WHEN 'D8' THEN '기술지원부'
+		WHEN 'D9' THEN '총무부'
+	END;
+	
+	DBMS_OUTPUT.PUT_LINE(EMP.EMP_NAME || ' 사원의 소속부서는 ' || DTITLE || '입니다.');
+END;
+/
+-------------------------------------------------------------------------------------------------------------------------------------
+/*
+	반복문
+	- 기본구분
+		LOOP
+			반복할 구문
+			반복문을 종료할 구문
+		END LOOP;
+		
+		- 반복문을 종료할 구문
+		1) IF 조건식 THEN EXIT; END IF;
+		2) EXIT WHEN 조건식;
+		
+	- FOR LOOP문
+		FOR 변수명 IN [REVERSE] 초기값..최종값
+		LOOP
+			반복할 구문
+			[반복문을 종료할 구문]
+		END LOOP;	
+		
+		* REVERSE : 최종값부터 초기값까지 반복
+	
+	- WHILE LOOP문
+		WHILE 조건식
+		LOOP
+			반복할 구문
+			[반복문을 종료할 구문]
+		END LOOP;	
+*/
+-- 기본구문을 사용하여 'HELLO ORACLE' 5번출력
+DECLARE
+	N NUMBER := 1;
+	
+BEGIN
+--	LOOP
+--	DBMS_OUTPUT.PUT_LINE('HELLO ORACLE');
+--	N := N + 1;
+--	IF N > 5 THEN EXIT; END IF;
+--	END LOOP;
+
+--	FOR I IN 1..5
+--	LOOP
+--		DBMS_OUTPUT.PUT_LINE('HELLO ORACLE');
+--	IF I > 5 THEN EXIT; END IF;
+--	END LOOP;
+	
+	FOR I IN REVERSE 1..5
+	LOOP
+		DBMS_OUTPUT.PUT_LINE('HELLO ORACLE' || I);
+	IF I > 5 THEN EXIT; END IF;
+	END LOOP;
+END;
+/
+-------------------------------------------------------------------------------------------------------------------------------------
+DROP TABLE TEST;
+
+CREATE TABLE TEST (
+	TNO NUMBER PRIMARY KEY,
+	TDATE DATE
+);
+
+CREATE SEQUENCE SEQ_TNO
+	INCREMENT BY 2
+	MAXVALUE 1000
+	NOCACHE;
+	
+-- TEST 테이블에 데이터를 100개 추가 TDATE는 같은 현재 날짜로 추가
+
+DECLARE
+	
+BEGIN
+	FOR I IN 1..100
+	LOOP
+		INSERT INTO TEST (TNO, TDATE) VALUES (SEQ_TNO.NEXTVAL, SYSDATE);
+	END LOOP;	
+END;
+/
+SELECT COUNT(*) FROM TEST;
+-------------------------------------------------------------------------------------------------------------------------------------
+/*
+	예외처리부(EXCEPTION)
+	- 실행 중 발생하는 오류
+	
+	[표현법]
+		EXCEPTION
+			WHEN 예외명 THEN 예외처리구문;
+			WHEN 예외명 THEN 예외처리구문;
+			...
+			WHEN OTHERS THEN 예외처리구문;
+		
+		* 오라클에서 미리 정의한 예외 ☞ 시스템 예외
+			- NO_DATA_FOUND : 조회된 결과가 없을 때 발생
+			- TOO_MANY_ROWS : 조회된 결과가 여러 행일 때 (☞ 변수에 대입)
+			- ZERO_DIVIDE : 값을 0으로 나누려고 할 때
+			- DUP_VAL_ON_INDEX : UNIQUE 조건에 위배될 때 (중복이 있는 경우)
+			...
+		* OTHERS : 어떤 예외든 발생되었을 때	
+*/
+-- 사용자에게 숫자를 입력받아서 10을 나눈 결과를 출력
+DECLARE
+	NUM NUMBER;
+BEGIN
+	NUM := &숫자;
+	DBMS_OUTPUT.PUT_LINE(TO_CHAR(10 / NUM, '0.0'));
+	
+EXCEPTION
+--	WHEN ZERO_DIVIDE THEN DBMS_OUTPUT.PUT_LINE('0으로 나눌 수 없습니다.');
+	WHEN OTHERS THEN DBMS_OUTPUT.PUT_LINE('0으로 나눌 수 없습니다.');
+END;
+/
+-- EMPLOYEE 테이블에 EMP_ID 컬럼이 기본키로 설정
+-- 사용자에게 사번을 입력받아 노옹철 사원의 사번을 변경
+DECLARE
+
+BEGIN
+	UPDATE EMPLOYEE
+		SET EMP_ID = &변경할사번
+	WHERE EMP_NAME = '노옹철';	
+	
+EXCEPTION
+	WHEN DUP_VAL_ON_INDEX THEN DBMS_OUTPUT.PUT_LINE('중복된 사원번호입니다.');
+END;
+/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
