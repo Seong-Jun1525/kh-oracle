@@ -53,8 +53,8 @@ SELECT INSTR('AABAACAABBAA', 'B', 1) FROM DUAL;
 SELECT INSTR('AABAACAABBAA', 'B', -1) FROM DUAL; -- 음수 값을 주면 뒤에서부터 찾고 결과값은 앞에서부터 순번으로 반환
 SELECT INSTR('AABAACAABBAA', 'B', 1, 2) FROM DUAL;
 
--- 사원 정보 중 이메일, 이메일의 '_'의 첫 번째 위치, 이메일의 '@'의 첫 번째 위치 조회
-SELECT EMAIL, INSTR(EMAIL, '_') AS " '_'의 첫 번째 위치", INSTR(EMAIL, '@') AS " '@'의 첫 번째 위치"
+-- 사원 정보 중 이메일, 이메일의 '_'의 첫 번째 위치, 이메일의 '@'의 첫 번째 위치, '_' 까지의 바이트 크기 조회
+SELECT EMAIL, INSTR(EMAIL, '_') AS " '_'의 첫 번째 위치", INSTR(EMAIL, '@') AS " '@'의 첫 번째 위치", INSTRB(EMAIL, '_') AS " '_' 까지의 바이트 크기"
 FROM EMPLOYEE;
 
 -- ==============================================================
