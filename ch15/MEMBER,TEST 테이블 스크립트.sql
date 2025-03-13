@@ -37,3 +37,8 @@ SELECT * FROM TEST;
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --INSERT INTO MEMBER
 --	VALUES (SEQ_MNO.NEXTVAL, '회원아이디', '회원비밀번호', '성별', 나이, '이메일', '주소', '연락처', '취미', DEFAULT);
+
+SELECT * FROM MEMBER;
+SELECT * FROM MEMBER WHERE MEMBERID = 'ADMIN';
+
+DELETE FROM MEMBER;
