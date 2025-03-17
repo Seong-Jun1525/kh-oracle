@@ -41,12 +41,12 @@ ALTER USER C##SAMPLE QUOTA 2M ON USERS;
 /*
 	객체 접근 권한 종류
 	===========================================================
-	= 종류					|  	접근 객체							   =
+	= 종류					|  	접근 객체							   
 	===========================================================
-	= SELECT				|	TABLE, VIEW, SEQUENCE		☞ 조회	   =
-	= INSERT 				|	TABLE, VIEW				☞ 추가      =
-	= UPDATE 				|	TABLE, VIEW				☞ 수정      =
-	= DELETE	 			|	TABLE, VIEW				☞ 삭제      =
+	= SELECT				|	TABLE, VIEW, SEQUENCE	☞ 조회	   
+	= INSERT 				|	TABLE, VIEW				☞ 추가      
+	= UPDATE 				|	TABLE, VIEW				☞ 수정      
+	= DELETE	 			|	TABLE, VIEW				☞ 삭제      
 	===========================================================
 	
 	권한 부여

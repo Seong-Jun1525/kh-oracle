@@ -104,11 +104,11 @@ ALTER TABLE DEPT_COPY DROP COLUMN DEPT_ID;
 	-- 제약조건 추가
 	-- 기본키 (PRIMARY KEY) : ADD PRIMARY KEY (컬럼명);
 	-- 외래키 (FOREIGN KEY) : ADD FOREIGN KEY (컬럼명) REFERENCES 참조할 테이블명 ([참조할 컬럼명]);
-	-- UNIQUE 				: ADD UNIQUE(컬럼명)
-	-- CHECK 				: ADD CHECK (컬럼에 대한 조건식) 특정 값들만 저장하고자 할 때 사용! NULL 값도 저장 가능
-	-- NOT NULL				: MODIFY 컬럼명 NOT NULL |NULL 값을 허용할지 말지에 대한 제약조건
+	-- UNIQUE 				: ADD UNIQUE(컬럼명);
+	-- CHECK 				: ADD CHECK (컬럼에 대한 조건식); 특정 값들만 저장하고자 할 때 사용! NULL 값도 저장 가능
+	-- NOT NULL				: MODIFY 컬럼명 NOT NULL | NULL; NULL 값을 허용할지 말지에 대한 제약조건
 	
-	제약조건명을 지정하고자 한다면 CONSTRAINT 제약조건명 추간	
+	제약조건명을 지정하고자 한다면 CONSTRAINT 제약조건명 추가
 */
 
 -- DEPT_TABLE 테이블에

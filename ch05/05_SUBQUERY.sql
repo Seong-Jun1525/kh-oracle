@@ -321,13 +321,3 @@ FROM (
 	GROUP BY DEPT_CODE
 )
 WHERE ЦђБе > 2700000;
-
-
-
-
-
-
-
-
-
-

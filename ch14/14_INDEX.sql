@@ -33,6 +33,15 @@ ALTER TABLE USER_INDEX_DATA ADD CONSTRAINT UQ_IDX_EMAIL UNIQUE (EMAIL);
 SELECT * FROM USER_IND_COLUMNS; -- 인덱스 정보 조회
 ------------------------------------------------------
 -- 인덱스가 설정되지 않은 테이블의 수행 계획 조회
+/*
+    쿼리 최적화: 실행 계획을 분석하여 쿼리 성능을 향상시킬 수 있는 방법을 찾습니다.
+    
+    인덱스 사용 여부 확인: 쿼리가 인덱스를 제대로 활용하고 있는지 알 수 있습니다.
+    
+    조인 방식 확인: 조인이 효율적인 방식으로 수행되고 있는지 분석합니다.
+    
+    비용 추정: 각 단계의 작업 비용을 보여줍니다.
+*/
 EXPLAIN PLAN FOR
 SELECT * FROM USER_MOCK_DATA WHERE ID = 30000;
 
@@ -40,10 +49,10 @@ SELECT * FROM TABLE(DBMS_XPLAN.DISPLAY);
 
 /*
 ------------------------------------------------------------------------------------
-| Id  	   | Operation        				 | Name           			| Rows    | Bytes | Cost (%CPU)| Time     |
+| Id  | Operation         | Name           | Rows  | Bytes | Cost (%CPU)| Time     |
 ------------------------------------------------------------------------------------
-|   	0 | SELECT STATEMENT 		 |               			| 	    5 |   665 |   137   (1)| 00:00:01 |
-|*  	1 |  TABLE ACCESS FULL		 | USER_MOCK_DATA |     	    5 |   665 |   137   (1)| 00:00:01 |
+|   0 | SELECT STATEMENT  |                |     5 |   665 |   137   (1)| 00:00:01 |
+|*  1 |  TABLE ACCESS FULL| USER_MOCK_DATA |     5 |   665 |   137   (1)| 00:00:01 |
 ------------------------------------------------------------------------------------
 
 Cost : 실행 예상 비용 (자원을 얼마만큼 소비하는가) ☞ 값이 낮을 수록 적은 비용으로 검색을 수행

@@ -58,7 +58,7 @@ BEGIN
 	DBMS_OUTPUT.PUT_LINE('ENAME : ' || ENAME);
 	DBMS_OUTPUT.PUT_LINE('PI : ' || PI);
 END;
-/
+/ -- PL/SQL은 / 로 구분한다!
 -- 값을 입력 받아 변수에 대입
 DECLARE
 	EID NUMBER;
@@ -410,36 +410,3 @@ EXCEPTION
 	WHEN DUP_VAL_ON_INDEX THEN DBMS_OUTPUT.PUT_LINE('중복된 사원번호입니다.');
 END;
 /
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
