@@ -18,7 +18,7 @@ WHERE 	NATIONAL_NAME = '러시아';
         해외영업1부	부장	심봉선	0.15
         해외영업2부	부장	유재식	0.2
         기술지원부	대리	이태림	0.35
-        총무부	대표	선동일	0.3
+        총무부	    대표	선동일	0.3
 */
 SELECT DEPT_TITLE, JOB_NAME, EMP_NAME, BONUS
 FROM EMPLOYEE

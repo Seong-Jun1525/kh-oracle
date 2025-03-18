@@ -206,7 +206,3 @@ DELETE FROM VW_EMP WHERE EMP_ID = 200;
 SQL 오류: ORA-42399: 읽기 전용 뷰에서는 DML 작업을 수행할 수 없습니다.
 42399.0000 - "cannot perform a DML operation on a read-only view"
 */
-
-
-
-

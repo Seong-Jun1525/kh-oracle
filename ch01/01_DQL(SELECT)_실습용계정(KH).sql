@@ -347,21 +347,3 @@ SELECT *
 FROM EMPLOYEE
 -- ORDER BY BONUS; -- 기본값 ASC ☞ ASC일 경우 NULLS LAST가 기본값
 ORDER BY BONUS DESC, SALARY; -- ☞ BONUS로 먼저 정렬하는데 같은 값일 경우 SALARY 기준으로 오름차순 정렬한다
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
